@@ -8,7 +8,11 @@ const jwt = require("jsonwebtoken");
 
 
 router.get("/", (req, res) => {
-    res.render('index')
+    if(req.session.authenticated){
+        res.redirect("/login")
+    }else{
+        res.render("index")
+    }
 });
 
 
@@ -35,9 +39,14 @@ router.post("/login", (req, res) => {
                             res.send(JSON.stringify('verify_email'));
                         } else {
                             if (bcrypt.compareSync(password, user.password)) {
-                                
-                                res.redirect("home.index.html")
-                            } else {
+                                req.session.authenticated = true
+
+                                req.session.user = {
+                                    email, password
+                                }
+                                res.render("../views/layouts/main.handlebars", {user: user})
+                                }
+                            else {
                                 res.send(JSON.stringify("error_login"));
                             }
                         }
@@ -61,33 +70,38 @@ router.post("/login", (req, res) => {
 
 
 //CRIAR USUÁRIO
-router.post('/user/create_user', async (req, res) => {
+router.post('/create_user', async (req, res) => {
 
     let { email } = req.body;
     let { password } = req.body;
+    let {first_name} = req.body;
+    let{last_name} = req.body;
 
-
+    const token = jwt.sign({ first_name }, process.env.JWT_SECRET, {expiresIn: '24h' });
+  
     bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(password, salt, function (err, hash) {
-
-            const token = jwt.sign({ email }, process.env.JWT_SECRET);
-            console.log(token)
-
-            const sql = `INSERT INTO user (email, password, status, token) VALUES ("${email}","${hash}", false, "${token}");`;
-            console.log(email, hash, token)
-
-            try {
-                database.query(sql, function (err, result) {
-                    if (result)
-                        res.send(JSON.stringify('cadastrado'))
-                })
-            } catch (err) {
-                res.send(err)
-            }
-        });
+      bcrypt.hash(password, salt, function (err, hash) {
+  
+        const sql = `INSERT INTO user (first_name, last_name, email, password, status,token) VALUES ("${first_name}","${last_name}", "${email}", "${hash}", false, "${token}");`
+  
+        try {
+          database.query(sql, function (err, result) {
+            if (result)
+              res.send(JSON.stringify('cadastrado'))
+          })
+        } catch (err) {
+          res.send(err)
+        }
+      });
     });
-});
-
+  });
+  
+  
+//LOGOUT
+router.get("/logout", (req, res)=>{
+    req.session.destroy()
+    res.render('index')
+})
 
 
 module.exports = router;

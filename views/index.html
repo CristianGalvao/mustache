@@ -1,25 +1,48 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="PT-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
     <link rel="stylesheet" href="./public/css/main.css">
+    <link rel="icon" href="../assets/logo.png" type="image/x-icon">
+
+    <title>Login</title>
 </head>
+
 <body>
-    <div class="page">
-        <form method="POST" action="http://127.0.0.1:3000/login" class="formLogin">
-            <h1>Login</h1>
-            <p>Digite os seus dados de acesso no campo abaixo.</p>
-            <label for="email">E-mail</label>
-            <input type="email" placeholder="Digite seu e-mail" autofocus="true" name="email"/>
-            <label for="password" >Senha</label>
-            <input type="password" placeholder="Digite seu e-mail" name="password"/>
-            <a href="/">Esqueci minha senha</a>
-            <input type="submit" value="Acessar" class="btn" />
-        </form>
+
+
+    <div class="container" id="container">
+        <div class="form-container sign-in-container">
+            <form id="form-login" method="post" action="http://localhost:3000/login">
+                <h1>Faça Login</h1><br>
+                <input type="email" placeholder="Email" id="email" required="true" name="email"/>
+                <input type="password" placeholder="Senha" id="password" required="true" name="password"/>
+                <a href="#">Esqueceu sua senha?</a>
+                <button id="buttonLogin">Entrar</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Olá, amigo!</h1>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Olá, amigo!</h1>
+                    <p>Alguma dúvida? entre em contato e comece a jornada conosco</p>
+                    <button class="ghost" id="signUp" type="submit">Fale Conosco</button>
+                </div>
+            </div>
+        </div>
     </div>
-    
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+
 </body>
+
+
 </html>

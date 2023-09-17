@@ -4,6 +4,9 @@ const dotenv = require('dotenv');
 const path = require("path");
 const session = require("express-session");
 const flash = require("connect-flash");
+const handlebars = require("express-handlebars");
+const store = new session.MemoryStore();
+
 
 dotenv.config();
 
@@ -14,6 +17,10 @@ const database = require("./database/database");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//HANDLEBARS
+app.engine('handlebars', handlebars.engine({ defaultLayout: 'main' }));
+app.set("view engine", 'handlebars')
+
 const secret = process.env.SECRET
 
 //SESSÂO
@@ -21,8 +28,11 @@ const secret = process.env.SECRET
 app.use(session({
     secret,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: {maxAge: 30000},
+    store
 }));
+
 
 app.use(flash())
 app.set('view engine', 'html');
@@ -33,8 +43,10 @@ app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/public'));
 
 
+
 // CONTROLLER
 const user_session = require('./controller/user_session_controller');
+console.log(store)
 app.use("/", user_session)
 
 
