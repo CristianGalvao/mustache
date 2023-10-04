@@ -8,9 +8,9 @@ const jwt = require("jsonwebtoken");
 
 
 router.get("/", (req, res) => {
-    if(req.session.authenticated){
+    if (req.session.authenticated) {
         res.redirect("/login")
-    }else{
+    } else {
         res.render("index")
     }
 });
@@ -44,8 +44,8 @@ router.post("/login", (req, res) => {
                                 req.session.user = {
                                     email, password
                                 }
-                                res.render("../views/layouts/main.handlebars", {user: user})
-                                }
+                                res.render("../views/layouts/main.handlebars", { user: user })
+                            }
                             else {
                                 res.send(JSON.stringify("error_login"));
                             }
@@ -74,33 +74,47 @@ router.post('/create_user', async (req, res) => {
 
     let { email } = req.body;
     let { password } = req.body;
-    let {first_name} = req.body;
-    let{last_name} = req.body;
+    let { first_name } = req.body;
+    let { last_name } = req.body;
 
-    const token = jwt.sign({ first_name }, process.env.JWT_SECRET, {expiresIn: '24h' });
-  
+    const token = jwt.sign({ first_name }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
     bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, function (err, hash) {
-  
-        const sql = `INSERT INTO user (first_name, last_name, email, password, status,token) VALUES ("${first_name}","${last_name}", "${email}", "${hash}", false, "${token}");`
-  
-        try {
-          database.query(sql, function (err, result) {
-            if (result)
-              res.send(JSON.stringify('cadastrado'))
-          })
-        } catch (err) {
-          res.send(err)
-        }
-      });
+        bcrypt.hash(password, salt, function (err, hash) {
+
+            const sql = `INSERT INTO user (first_name, last_name, email, password, status,token) VALUES ("${first_name}","${last_name}", "${email}", "${hash}", false, "${token}");`
+
+            try {
+                database.query(sql, function (err, result) {
+                    if (result)
+                        res.send(JSON.stringify('cadastrado'))
+                })
+            } catch (err) {
+                res.send(err)
+            }
+        });
     });
-  });
-  
-  
+});
+
+
 //LOGOUT
-router.get("/logout", (req, res)=>{
+router.get("/logout", (req, res) => {
     req.session.destroy()
     res.render('index')
+});
+
+// LISTANDO USUARIOS
+
+
+
+router.get("/get_users", (req, res) => {
+
+    const sql = "SELECT first_name, last_name, email, level_administrator FROM user;"
+
+    database.query(sql, function (err, data, fields) {
+        if (err) throw err;
+        res.send(data);
+      });
 })
 
 
