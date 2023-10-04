@@ -8,6 +8,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="./public/css/style.css">
+    <link rel="stylesheet" href="./public/css/user/user.css">
 
     <!-- Boxicons JS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -18,7 +19,6 @@
 </head>
 
 <body>
-
 
     <nav class="sidebar close">
 
@@ -53,7 +53,7 @@
 
                 <ul class="menu-links">
 
-                    <li class="nav-link" id="defaultOpen" onclick="openCity(event, 'Home')">
+                    <li class="nav-link loadHome" onclick="openCity(event, 'Home')">
                         <a href="#home"><i class='bx bx-home-alt icon'></i>
                             <span class="text nav-text">Home</span></a>
 
@@ -71,7 +71,7 @@
 
                     </li>
 
-                    <li class="nav-link" onclick="openCity(event, 'analises')">
+                    <li class="nav-link" onclick="openCity(event, 'user')">
                         <a href="#"><i class='bx bx-pie-chart icon'></i>
                             <span class="text nav-text">Usuários</span></a>
 
@@ -95,13 +95,13 @@
 
             <div class="bottom-content">
 
-                <form action="/logout" method="GET">
-                    <li class="btn-logout" type="submit">
-                        <a href="#"><i class='bx bx-log-out icon'></i>
-                            <button class="text nav-text" style="background-color: transparent;border: none" type="submit">Sair</button></a>
+                <form action="/logout" method="GET" id="form-logout">
+                    <li class="btn-logout" onclick="formLogout()">
+                        <a type="submit"><i class='bx bx-log-out icon'></i>
+                            <button class="text nav-text"
+                                style="background-color: transparent;border: none">Sair</button></a>
+                    </li>
                 </form>
-
-                </li>
             </div>
         </div>
     </nav>
@@ -122,7 +122,7 @@
     </section>
 
 
-    <section class="home" id="analises">
+    <section class="home" id="user">
         <div class="text">Gerenciamento de Usuários</div>
     </section>
 
@@ -138,6 +138,7 @@
 
 
     <script src="./public/script/script.js"></script>
+
 
 </body>
 
