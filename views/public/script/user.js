@@ -20,6 +20,7 @@ get_user(api_url);
 function show(data) {
     let tab = 
         `<tr>
+          <th>ID</th>
           <th>Primeiro Nome</th>
           <th>Último Nome</th>
           <th>Email</th>
@@ -29,6 +30,7 @@ function show(data) {
     // Loop to access all rows 
     for (let r of Object.values(data)) {
         tab += `<tr> 
+    <td>${r.id}</td>
     <td>${r.first_name} </td>
     <td>${r.last_name}</td>
     <td>${r.email}</td> 
@@ -39,7 +41,7 @@ function show(data) {
     document.getElementById("employees").innerHTML = tab;
 }
 
-window.onload = function(){
-    get_user(api_url);
-    console.log('refresh data')
-}
+// window.onload = function(){
+//     get_user(api_url);
+//     console.log('refresh data')
+// }

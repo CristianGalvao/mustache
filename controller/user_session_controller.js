@@ -109,7 +109,7 @@ router.get("/logout", (req, res) => {
 
 router.get("/get_users", (req, res) => {
 
-    const sql = "SELECT first_name, last_name, email, level_administrator FROM user;"
+    const sql = "SELECT id, first_name, last_name, email, level_administrator FROM user;"
 
     database.query(sql, function (err, data, fields) {
         if (err) throw err;
